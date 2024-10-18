@@ -1,0 +1,31 @@
+openapi: 3.0.0
+info:
+  title: API de Cases
+  description: API para listar cases cadastrados no Drupal
+  version: "1.0.0"
+paths:
+  /cases:
+    get:
+      summary: Listar todos os cases
+      responses:
+        '200':
+          description: Lista de cases
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    title:
+                      type: string
+                      example: "Título do Case"
+                    description:
+                      type: string
+                      example: "Descrição do case"
+                    image:
+                      type: string
+                      example: "http://exemplo.com/imagem.jpg"

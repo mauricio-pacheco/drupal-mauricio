@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  db-mauricio:
+    image: mysql:8.0  # Atualizado para a versão 8.0
+    container_name: db-mauricio
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: drupal
+      MYSQL_USER: drupal
+      MYSQL_PASSWORD: drupalpassword
+    volumes:
+      - db_data:/var/lib/mysql
+
+  drupal-mauricio:
+    image: drupal:latest
+    container_name: drupal-mauricio
+    ports:
+      - "8082:80"  # Mapeando a porta 8082
+    volumes:
+      - drupal_data:/var/www/html
+    depends_on:
+      - db-mauricio
+    environment:
+      DRUPAL_DB_HOST: db-mauricio
+      DRUPAL_DB_USER: drupal
+      DRUPAL_DB_PASSWORD: drupalpassword
+      DRUPAL_DB_NAME: drupal
+
+  swagger-mauricio:
+    image: swaggerapi/swagger-ui
+    container_name: swagger-mauricio
+    ports:
+      - "8083:8080"  # Mapeando a porta 8083
+    volumes:
+      - ./swagger.yaml:/tmp/swagger.yaml  # Mapeando o arquivo swagger.yaml
+    environment:
+      SWAGGER_JSON: /tmp/swagger.yaml  # Ajuste do caminho do arquivo Swagger
+
+volumes:
+  db_data:  # Volume para dados do MySQL
+  drupal_data:  # Volume para dados do Drupal
